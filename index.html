@@ -5,12 +5,40 @@
 
 <body>
   <p>Hello</p>
-
-  <div class="myRedBox" id="mrb">
+  
+  
+  
+  <!-- <div class="myBox myRedBox" id="mrb">
     <p>Class myRedBox</p>
     <div>This class is a red box</div>
   </div>
-  <div id="p"></div>
-  <img src="images/stickman.gif" width="24" height="39" alt="Stickman" />
-  <a href="tags/tag_base.asp">HTML base Tag</a>
+  
+  <div class="myBox myGreenBox" id="mrb">
+    <p>Class myGreenBox</p>
+    <div>This class is a green box</div>
+  </div> -->
+  
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-database.js"></script>
+  
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDyAsBv_2YzAEwM2J5gTPVZ_GXFf-l-aiU",
+      authDomain: "zootr-test.firebaseapp.com",
+      databaseURL: "https://zootr-test.firebaseio.com",
+      projectId: "zootr-test",
+      storageBucket: "zootr-test.appspot.com",
+      messagingSenderId: "341845141820",
+      appId: "1:341845141820:web:e0103540c3be5aabec1639",
+      measurementId: "G-C243ZLX8E2"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </body>
