@@ -1,39 +1,54 @@
 window.addEventListener("load", main);
 
+window.addEventListener("load", tab_opened);
+window.addEventListener("unload", tab_closed);
+
+function tab_opened()
+{
+  writeUserData('Sam2', 'Sam', 'sam.yahoo', 'google.com');
+}
+
+function tab_closed()
+{
+  removeUser('Sam2');
+}
+
 function CreateElementWithClass(className)
 {
-  let elemMyBox = document.createElement("div");
+  let elem = document.createElement("div");
   
   for(var i = 0; i < className.length; ++i)
   {
-    elemMyBox.classList.add(className[i]);
+    elem.classList.add(className[i]);
   }
   
-  //elemMyBox.classList.add("myBox","myRedBox");
-  elemMyBox.id = "mrb";
+  elem.id = "mrb";
   
-  let childElemMyBox = document.createElement("p");
-  childElemMyBox.innerHTML = "Dynamically made box";
+  let childElem = document.createElement("p");
+  childElem.innerHTML = "Dynamically made box";
   
-  elemMyBox.appendChild(childElemMyBox);
+  elem.appendChild(childElem);
   
+  document.body.appendChild(elem);
   
-  
-  return elemMyBox;
+  elem.addEventListener("mousedown", onMouseDown);
+  elem.addEventListener("mouseup"  , onMouseUp);
 }
 
 function main()
 {
   let database = firebase.database();
   
-  document.body.appendChild(CreateElementWithClass(["myBox"]));
+  CreateElementWithClass(["myBox", "myRedBox"]);
   
-  writeUserData('1', 'shareef', 'sam.yahoo', 'google.com');
-  writeUserData('2', 'shareef', 'sam.yahoo', 'google.com');
-  writeUserData('10', 'shareef', 'sam.yahoo', 'google.com');
-  writeUserData('15', 'shareef', 'sam.yahoo', 'google.com');
-  writeUserData('3', 'shareef', 'sam.yahoo', 'google.com');
-  writeUserData('111', 'shareef', 'sam.yahoo', 'google.com');
+  //writeUserData('1', 'shareef', 'sam.yahoo', 'google.com');
+  //writeUserData('2', 'shareef', 'sam.yahoo', 'google.com');
+  //writeUserData('10', 'shareef', 'sam.yahoo', 'google.com');
+  //writeUserData('15', 'shareef', 'sam.yahoo', 'google.com');
+  //writeUserData('3', 'shareef', 'sam.yahoo', 'google.com');
+  //writeUserData('111', 'shareef', 'sam.yahoo', 'google.com');
+  
+  
   
   //elem.addEventListener("click", onClick);
   
@@ -41,8 +56,38 @@ function main()
   elem.addEventListener("mousedown", onMouseDown);
   elem.addEventListener("mouseup"  , onMouseUp);
   
-  console.log('H377o World!');
-  console.log(elem);
+  let auth = firebase.auth();
+  
+  auth.onAuthStateChanged(userAuthenticationStateChanged);
+  auth.signInAnonymously().uid;
+  
+  //let userId = firebase.auth().currentUser.uid;
+  
+  //console.log('User ID: ' + userId);
+}
+
+function userAuthenticationStateChanged(user)
+{
+  if(user)
+  {
+      // User is signed in
+    console.log('User ' + user.uid + ' changed state');
+  }
+  else
+  {
+      // User is signed out
+    console.log('User is logged out');
+  }
+}
+
+function removeUser(userId)
+{
+  firebase.database().ref('users/' + userId).remove();
+}
+
+function isUserValid(userId)
+{
+  firebase.database().ref('users/' + userId)
 }
 
 function writeUserData(userId, name, email, imageUrl)
@@ -57,11 +102,15 @@ function writeUserData(userId, name, email, imageUrl)
 function onMouseDown(event)
 {
   event.currentTarget.classList.add('Task');
+  
+  writeUserData('Sam', 'sam', 'yahoo', 'google');
 }
 
 function onMouseUp(event)
 {
   event.currentTarget.classList.remove('Task');
+  
+  removeUser('Sam');
 }
 
 function onClick(event)
