@@ -64,6 +64,8 @@ function main()
   //let userId = firebase.auth().currentUser.uid;
   
   //console.log('User ID: ' + userId);
+  
+  console.log('Hello world');
 }
 
 function userAuthenticationStateChanged(user)
