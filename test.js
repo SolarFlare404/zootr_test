@@ -65,7 +65,7 @@ function main()
   
   //console.log('User ID: ' + userId);
   
-  console.log('Hello world');
+  console.log('Hello world2');
 }
 
 function userAuthenticationStateChanged(user)
