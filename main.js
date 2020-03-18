@@ -63,14 +63,14 @@ function onCategoryClick(event)
   
   //event.target.classList.toggle('Invisible');
   
-  let entry = this.nextElementSibling;
-  
-  console.log(entry);
-  
-  if(entry.style.display === "block")
-    entry.style.display = "none";
-  else
-    entry.style.display = "block";
+  //let entry = this.nextElementSibling;
+  //
+  //console.log(entry);
+  //
+  //if(entry.style.display === "block")
+  //  entry.style.display = "none";
+  //else
+  //  entry.style.display = "block";
 }
 }
 
