@@ -1,0 +1,9 @@
+{
+  "name" : "Heart Piece #1",
+  "loc"  : "Lost Woods, Room 3D",
+  "desc" : "This heart piece can be obtained after playing your ocarina with two skull kids.",
+  "items":
+  [
+    "Ocarina"
+  ]
+}

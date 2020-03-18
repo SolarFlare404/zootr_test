@@ -5,7 +5,10 @@ window.addEventListener("unload", tab_closed);
 
 function tab_opened()
 {
-  writeUserData('Sam2', 'Sam', 'sam.yahoo', 'google.com');
+  
+  
+  //isUserValid('Sam2');
+  //writeUserData('Sam2', 'Sam', 'sam.yahoo', 'google.com');
 }
 
 function tab_closed()
@@ -89,7 +92,18 @@ function removeUser(userId)
 
 function isUserValid(userId)
 {
-  firebase.database().ref('users/' + userId)
+  let userRef = firebase.database().ref('users/' + userId);
+  let isValid = false;
+  let hasValidated = false;
+  
+  userRef.once("value").then(function(snapshot)
+  {
+    hasValidated = true;
+    isValid = snapshot.exists();
+    //console.log(isValid);
+  });
+  
+  console.log("User state: " + isValid);
 }
 
 function writeUserData(userId, name, email, imageUrl)
@@ -104,6 +118,13 @@ function writeUserData(userId, name, email, imageUrl)
 function onMouseDown(event)
 {
   event.currentTarget.classList.add('Task');
+  
+  if(firebase.auth().currentUser)
+  {
+    console.log("User ID: " + firebase.auth().currentUser.uid);
+  }
+  
+  isUserValid('1234');
   
   writeUserData('Sam', 'sam', 'yahoo', 'google');
 }

@@ -1,0 +1,9 @@
+{
+  "name" : "Title",
+  "loc"  : "Location",
+  "desc" : "Description",
+  "items":
+  [
+    "None"
+  ]
+}
