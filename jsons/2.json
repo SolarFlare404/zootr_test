@@ -1,0 +1,9 @@
+{
+  "name" : "Fairy Ocarina",
+  "loc"  : "Kokiri Forest Bridge",
+  "desc" : "The Fairy Ocarina can be found on the bridge while trying to leave the Kokiri Forest.",
+  "items":
+  [
+    "None"
+  ]
+}

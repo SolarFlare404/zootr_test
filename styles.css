@@ -13,6 +13,12 @@
   background-color: rgb(0, 255, 13);
 }
 
+hr
+{
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .Task
 {
@@ -22,18 +28,22 @@
 .Entry
 {
   border: 1px black solid;
+  padding: 18px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
-.EntryType
+.EntryCategory
 {
   text-align: left;
   color: black;
+  text-decoration: underline cornflowerblue;
 }
 
 .EntryImage
 {
   background-image: url("images/wood_grain.jpg");
-  background-color: rgb(151, 88, 29);
+  background-color: rgb(39, 23, 9);
   height: 100px;
   background-position: center;
   background-repeat: no-repeat;
@@ -44,9 +54,32 @@
 {
   text-align: center;
   color: goldenrod;
+  text-decoration: none;
 }
 
-.EntryText
+.EntryItems
 {
-  color: black;
+  text-align: center;
+  color: rgb(87, 167, 23);
+  text-decoration: none;
+}
+
+.EntryLocation
+{
+  text-align: left;
+  color: rgb(87, 167, 23);
+  text-decoration: none;
+}
+
+.EntryDescription
+{
+  text-align: left;
+  color: rgb(87, 167, 23);
+  text-indent: 25px;
+  text-decoration: none;
+}
+
+.Invisible
+{
+  display: none
 }

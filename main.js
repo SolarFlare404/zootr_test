@@ -1,6 +1,7 @@
 window.addEventListener("load", main);
 
 const _entryPath = 'entries/';
+const _jsonPath = 'jsons/';
 let jsonFiles = null;
 let isValid = true;
 
@@ -13,9 +14,32 @@ function main()
   
   //CreateElementWithClass(["myBox", "myRedBox"]);
   
-  createEntryElement();
+  //createEntryElement();
+  let category = createCategoryElement();
+  readTextFile("jsons/0.json", doneReadTextFile, category);
   
-  readTextFile("jsons/1.json", doneReadTextFile);
+  //category.classList.add("Invisible");
+  
+  checkReadComplete(onReadComplete);
+}
+
+function onReadComplete()
+{
+  for(key in jsonFiles)
+  {
+    //console.log(key);
+    
+    let category = createCategoryElement(key);
+    
+    for(key2 in jsonFiles[key])
+    {
+      //console.log("   " + key2 + ": " + jsonFiles[key][key2]);
+      
+      readTextFile(_jsonPath + jsonFiles[key][key2], doneReadTextFile, category);
+      
+      //createEntryElementFromJSON();
+    }
+  }
 }
 
 function checkReadComplete(callbackFunc)
@@ -31,10 +55,30 @@ function checkReadComplete(callbackFunc)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Callbacks
+{
+function onCategoryClick(event)
+{
+  //event.currentTarget.children.classList.toggle('Invisible');
+  
+  //event.target.classList.toggle('Invisible');
+  
+  let entry = this.nextElementSibling;
+  
+  console.log(entry);
+  
+  if(entry.style.display === "block")
+    entry.style.display = "none";
+  else
+    entry.style.display = "block";
+}
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // JSON
 {
   // Gift from Shareef Raheem
-function readTextFile(file, callback=doneReadTextFile)
+function readTextFile(file, callback=doneReadTextFile, data=null)
 {
   var rawFile = new XMLHttpRequest();
   rawFile.open("GET", file, true);
@@ -45,19 +89,23 @@ function readTextFile(file, callback=doneReadTextFile)
       if (rawFile.status === 200 || rawFile.status == 0)
       {
         var allText = rawFile.responseText;
-        callback(allText);
+        
+        if(data === null)
+          callback(allText);
+        else
+          callback(allText, data);
       }
     }
   }
   rawFile.send(null);
 }
 
-function doneReadTextFile(text)
+function doneReadTextFile(text, parent)
 {
   let json = JSON.parse(text);
   //console.log(json);
   
-  createEntryElementFromJSON(json);
+  createEntryElementFromJSON(json, parent);
 }
 }
 
@@ -118,7 +166,25 @@ function createEntryElement()
   readTextFile("jsons/0.json");
 }
 
-function createEntryElementFromJSON(jsonObj)
+function createCategoryElement(categoryName="Category Name", parent=document.body)
+{
+  let category = document.createElement("div");
+  //category.classList.add("EntryCategory");
+  
+    // Create the category element
+  createChild("p", ["EntryCategory"], categoryName, category);
+  
+    // Add the category to the parent (default is document body)
+  parent.appendChild(category);
+  
+    // Add event listeners
+  category.addEventListener("click", onCategoryClick);
+  
+    // Return the category for chaining
+  return category;
+}
+
+function createEntryElementFromJSON(jsonObj, parent=document.body)
 {
     // Create the entry element
   let entry = document.createElement("div");
@@ -130,18 +196,23 @@ function createEntryElementFromJSON(jsonObj)
     // Create the title
   createChild("div", ["EntryTitle"], jsonObj["name"], entry);
   
+  createChild("hr", [], "", entry);
+  
     // Create the item list
-  child = createChild("div", ["EntryText"], jsonObj["items"], entry);
-  child.innerHTML = "Items: " + child.innerHTML;
+  child = createChild("div", ["EntryItems"], jsonObj["items"], entry);
+  //child.innerHTML = "Items: " + child.innerHTML;
   
     // Create the location description
-  createChild("div", ["EntryText"], jsonObj["loc"], entry);
+  createChild("div", ["EntryLocation"], jsonObj["loc"], entry);
   
     // Create the description
-  createChild("div", ["EntryText"], jsonObj["desc"], entry);
+  createChild("div", ["EntryDescription"], jsonObj["desc"], entry);
   
-    // Add the entry to the document
-  document.body.appendChild(entry);
+    // Add the entry to the parent (default is document body)
+  parent.appendChild(entry);
+  
+    // Return for chaining
+  return entry;
 }
 }
 
@@ -160,11 +231,6 @@ function readEntries(snapshot)
     jsonFiles = snapshot.exportVal();
     
     //console.log(jsonFiles);
-    
-    snapshot.val().forEach(function(value)
-    {
-      //console.log(value);
-    });
   }
   else
   {
@@ -178,7 +244,7 @@ function readEntry(snapshot)
   {
     if(snapshot.hasChild('filename'))
     {
-      console.log("Value: " + snapshot.child('filename').val());
+      //console.log("Value: " + snapshot.child('filename').val());
     }
     else
     {
