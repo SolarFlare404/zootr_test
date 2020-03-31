@@ -1,4 +1,5 @@
 window.addEventListener("load", main);
+window.addEventListener("resize", onWindowResize);
 
 const _entryPath = 'entries/';
 const _jsonPath = 'jsons/';
@@ -57,20 +58,31 @@ function checkReadComplete(callbackFunc)
 ////////////////////////////////////////////////////////////////////////////////
 // Callbacks
 {
+function onWindowResize(event)
+{
+  console.log("Hello");
+  
+  //let entries = document.getElementsByClassName("Entry");
+  
+  //console.log(entries.length);
+}
+
 function onCategoryClick(event)
 {
   //event.currentTarget.children.classList.toggle('Invisible');
   
   //event.target.classList.toggle('Invisible');
   
-  //let entry = this.nextElementSibling;
-  //
-  //console.log(entry);
-  //
-  //if(entry.style.display === "block")
-  //  entry.style.display = "none";
-  //else
-  //  entry.style.display = "block";
+  console.log("Minimize");
+  
+  let entry = this.nextElementSibling;
+  
+  console.log(entry);
+  
+  if(entry.style.display === "block")
+    entry.style.display = "none";
+  else
+    entry.style.display = "block";
 }
 }
 
@@ -172,13 +184,13 @@ function createCategoryElement(categoryName="Category Name", parent=document.bod
   //category.classList.add("EntryCategory");
   
     // Create the category element
-  createChild("p", ["EntryCategory"], categoryName, category);
+  let child = createChild("p", ["EntryCategory"], categoryName, category);
   
     // Add the category to the parent (default is document body)
   parent.appendChild(category);
   
     // Add event listeners
-  category.addEventListener("click", onCategoryClick);
+  //child.addEventListener("click", onCategoryClick);
   
     // Return the category for chaining
   return category;
@@ -190,29 +202,57 @@ function createEntryElementFromJSON(jsonObj, parent=document.body)
   let entry = document.createElement("div");
   entry.classList.add("Entry", "EntryImage");
   
+    // Add the entry to the parent (default is document body)
+  parent.appendChild(entry);
+  
+    // Create the class of objects that will get cutoff
+  let cutoff = createChild("div", ["EntryCutoff"], "", entry);
+  
     // Store any children we want to edit after creating
   let child;
   
     // Create the title
-  createChild("div", ["EntryTitle"], jsonObj["name"], entry);
+  createChild("div", ["EntryTitle"], jsonObj["name"], cutoff);
   
-  createChild("hr", [], "", entry);
+    // Create the separation bar
+  createChild("hr", [], "", cutoff);
   
     // Create the item list
-  child = createChild("div", ["EntryItems"], jsonObj["items"], entry);
+  child = createChild("div", ["EntryItems"], jsonObj["items"], cutoff);
   //child.innerHTML = "Items: " + child.innerHTML;
   
     // Create the location description
-  createChild("div", ["EntryLocation"], jsonObj["loc"], entry);
+  createChild("div", ["EntryLocation"], jsonObj["loc"], cutoff);
   
     // Create the description
-  createChild("div", ["EntryDescription"], jsonObj["desc"], entry);
+  createChild("div", ["EntryDescription"], jsonObj["desc"], cutoff);
   
-    // Add the entry to the parent (default is document body)
-  parent.appendChild(entry);
+  // Text has overflowed
+  if(doesOverflow(cutoff, jsonObj["name"]))
+  {
+    createChild("fade", [], "", cutoff);
+    
+    child = createChild("img", ["EntryMinimize"], "", entry);
+    //console.log(child.style.getPropertyValue("--my-var"));
+    child.src = "images/expand_icon.png";
+  }
   
     // Return for chaining
   return entry;
+}
+
+function doesOverflow(elem)
+{
+  let children = elem.children;
+  let height = 0;
+  
+  for(let i = 0; i < children.length; ++i)
+  {
+    if(getComputedStyle(children[i]).getPropertyValue("position") !== "absolute")
+      height += children[i].clientHeight;
+  }
+  
+  return elem.clientHeight < height;
 }
 }
 
